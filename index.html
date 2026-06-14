@@ -1,0 +1,1690 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Last One | Onboarding Jornada dos 90 Dias</title>
+  <meta name="description" content="Apresentacao padrao de onboarding da Last One para clientes de farmacias de manipulacao." />
+  <link rel="icon" href="assets/last-one-symbol.png" />
+  <style>
+    :root {
+      --bg: #181818;
+      --panel: #151515;
+      --panel-soft: #242424;
+      --line: rgba(255, 255, 255, .14);
+      --white: #f5f5f5;
+      --muted: #cfcfcf;
+      --muted-2: #969696;
+      --green: #72ff00;
+      --green-soft: rgba(114, 255, 0, .14);
+      --danger: #ff5f5f;
+      --amber: #ffd166;
+      --radius: 8px;
+      --shadow: 0 24px 80px rgba(0, 0, 0, .42);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      width: 100%;
+      min-height: 100%;
+      margin: 0;
+      background: #0f0f0f;
+      color: var(--white);
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    body {
+      overflow: hidden;
+    }
+
+    button {
+      font: inherit;
+    }
+
+    input,
+    textarea,
+    select {
+      font: inherit;
+    }
+
+    .deck-shell {
+      width: 100vw;
+      height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 22px;
+      background:
+        radial-gradient(circle at 78% 14%, rgba(114, 255, 0, .12), transparent 24%),
+        radial-gradient(circle at 18% 90%, rgba(114, 255, 0, .08), transparent 28%),
+        #0d0d0d;
+    }
+
+    .deck {
+      position: relative;
+      width: min(100%, calc(100vh * 16 / 9));
+      aspect-ratio: 16 / 9;
+      background: var(--bg);
+      border: 1px solid rgba(255, 255, 255, .12);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .deck::before {
+      content: "LO";
+      position: absolute;
+      right: -3vw;
+      bottom: -5vw;
+      font-family: Impact, "Arial Black", sans-serif;
+      font-size: clamp(220px, 32vw, 520px);
+      line-height: .72;
+      color: rgba(255, 255, 255, .035);
+      pointer-events: none;
+    }
+
+    .deck::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background:
+        linear-gradient(90deg, rgba(255, 255, 255, .035) 1px, transparent 1px),
+        linear-gradient(rgba(255, 255, 255, .025) 1px, transparent 1px);
+      background-size: 62px 62px;
+      mask-image: linear-gradient(90deg, transparent, #000 18%, #000 82%, transparent);
+    }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 28px;
+      padding: 34px 368px 34px 34px;
+      opacity: 0;
+      transform: translateX(28px);
+      transition: opacity .34s ease, transform .34s ease;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .slide.active {
+      opacity: 1;
+      transform: translateX(0);
+      pointer-events: auto;
+      z-index: 2;
+    }
+
+    .main {
+      min-width: 0;
+      display: grid;
+      grid-template-rows: auto 1fr;
+      gap: 22px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 220px;
+    }
+
+    .brand img {
+      width: 178px;
+      height: auto;
+      display: block;
+      filter: drop-shadow(0 0 12px rgba(114, 255, 0, .2));
+    }
+
+    .section-label {
+      color: var(--green);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .slide-number {
+      color: var(--muted-2);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .content {
+      position: relative;
+      min-height: 0;
+      display: grid;
+      align-content: center;
+      gap: 24px;
+    }
+
+    h1,
+    h2,
+    h3,
+    p {
+      margin: 0;
+    }
+
+    h1,
+    h2 {
+      font-family: Impact, "Arial Black", sans-serif;
+      font-weight: 900;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      max-width: 880px;
+      font-size: clamp(54px, 7.2vw, 104px);
+      line-height: .92;
+    }
+
+    h2 {
+      max-width: 760px;
+      font-size: clamp(44px, 5.4vw, 78px);
+      line-height: .94;
+    }
+
+    .green {
+      color: var(--green);
+    }
+
+    .lead {
+      max-width: 760px;
+      color: var(--muted);
+      font-size: clamp(20px, 1.55vw, 27px);
+      line-height: 1.25;
+      font-weight: 700;
+    }
+
+    .accent-line {
+      width: 138px;
+      height: 7px;
+      background: var(--green);
+      box-shadow: 0 0 24px rgba(114, 255, 0, .44);
+    }
+
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      max-width: 870px;
+    }
+
+    .stat,
+    .box,
+    .metric,
+    .mini-card,
+    .week-card,
+    .comparison-card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: rgba(21, 21, 21, .82);
+    }
+
+    .stat {
+      padding: 18px;
+      min-height: 124px;
+      display: grid;
+      align-content: space-between;
+    }
+
+    .stat strong {
+      color: var(--green);
+      font-family: Impact, "Arial Black", sans-serif;
+      font-size: clamp(32px, 3.5vw, 54px);
+      line-height: 1;
+    }
+
+    .stat span {
+      color: var(--muted);
+      font-size: 16px;
+      font-weight: 800;
+      line-height: 1.2;
+    }
+
+    .week-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+      max-width: 900px;
+    }
+
+    .week-card {
+      min-height: 274px;
+      padding: 20px;
+      display: grid;
+      gap: 16px;
+      align-content: start;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .week-card::after {
+      content: "";
+      position: absolute;
+      left: 20px;
+      right: 20px;
+      bottom: 0;
+      height: 5px;
+      background: var(--green);
+    }
+
+    .week-title {
+      color: var(--green);
+      font-size: 14px;
+      font-weight: 900;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .check-list {
+      display: grid;
+      gap: 12px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .check-list li {
+      display: grid;
+      grid-template-columns: 24px 1fr;
+      gap: 10px;
+      align-items: start;
+      color: var(--white);
+      font-size: clamp(17px, 1.38vw, 22px);
+      font-weight: 800;
+      line-height: 1.18;
+    }
+
+    .check-list li::before {
+      content: "";
+      width: 20px;
+      height: 20px;
+      margin-top: 1px;
+      border: 2px solid var(--green);
+      border-radius: 5px;
+      background:
+        linear-gradient(135deg, transparent 45%, var(--green) 46% 58%, transparent 59%),
+        linear-gradient(45deg, transparent 46%, var(--green) 47% 59%, transparent 60%);
+    }
+
+    .growth-row {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      align-items: stretch;
+      max-width: 920px;
+    }
+
+    .growth-step {
+      position: relative;
+      min-height: 164px;
+      padding: 20px;
+      border: 1px solid var(--line);
+      background: rgba(36, 36, 36, .68);
+      border-radius: var(--radius);
+      display: grid;
+      align-content: space-between;
+    }
+
+    .growth-step:not(:last-child)::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      right: -17px;
+      width: 18px;
+      height: 18px;
+      border-top: 4px solid var(--green);
+      border-right: 4px solid var(--green);
+      transform: translateY(-50%) rotate(45deg);
+      z-index: 3;
+    }
+
+    .growth-step small {
+      color: var(--green);
+      font-size: 13px;
+      font-weight: 900;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .growth-step b {
+      font-family: Impact, "Arial Black", sans-serif;
+      font-size: clamp(34px, 3.3vw, 52px);
+      text-transform: uppercase;
+      line-height: .95;
+    }
+
+    .quote {
+      max-width: 900px;
+      border-left: 7px solid var(--green);
+      padding: 20px 24px;
+      background: rgba(114, 255, 0, .08);
+      color: var(--white);
+      font-size: clamp(22px, 2.2vw, 34px);
+      line-height: 1.08;
+      font-weight: 900;
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+      max-width: 920px;
+    }
+
+    .comparison-card {
+      padding: 20px;
+      display: grid;
+      gap: 15px;
+      min-height: 258px;
+    }
+
+    .comparison-card.good {
+      border-color: rgba(114, 255, 0, .5);
+      background: linear-gradient(180deg, rgba(114, 255, 0, .1), rgba(21, 21, 21, .9));
+    }
+
+    .comparison-card.bad {
+      border-color: rgba(255, 95, 95, .38);
+    }
+
+    .comparison-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      font-size: 15px;
+      font-weight: 900;
+      letter-spacing: 1.7px;
+      text-transform: uppercase;
+    }
+
+    .comparison-title span {
+      color: var(--muted-2);
+      letter-spacing: 0;
+      text-transform: none;
+    }
+
+    .flow {
+      display: grid;
+      gap: 10px;
+      align-content: start;
+    }
+
+    .flow-item {
+      padding: 11px 14px;
+      border-radius: var(--radius);
+      background: rgba(255, 255, 255, .06);
+      color: var(--white);
+      font-size: clamp(18px, 1.56vw, 25px);
+      font-weight: 900;
+      line-height: 1.05;
+    }
+
+    .flow-arrow {
+      color: var(--green);
+      font-size: 26px;
+      line-height: 1;
+      text-align: center;
+      font-weight: 900;
+    }
+
+    .result {
+      color: var(--green);
+      font-family: Impact, "Arial Black", sans-serif;
+      font-size: clamp(42px, 4.35vw, 68px);
+      line-height: .9;
+    }
+
+    .bad .result {
+      color: var(--danger);
+    }
+
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      max-width: 900px;
+    }
+
+    .metric {
+      min-height: 128px;
+      padding: 18px;
+      display: grid;
+      align-content: space-between;
+    }
+
+    .metric b {
+      color: var(--green);
+      font-family: Impact, "Arial Black", sans-serif;
+      font-size: 38px;
+      line-height: 1;
+    }
+
+    .metric span {
+      color: var(--white);
+      font-size: 18px;
+      font-weight: 900;
+      line-height: 1.1;
+    }
+
+    .routine-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      max-width: 880px;
+    }
+
+    .mini-card {
+      min-height: 132px;
+      padding: 18px;
+      display: grid;
+      align-content: space-between;
+    }
+
+    .mini-card strong {
+      color: var(--green);
+      font-size: 15px;
+      font-weight: 900;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .mini-card span {
+      color: var(--white);
+      font-size: clamp(19px, 1.8vw, 27px);
+      font-weight: 900;
+      line-height: 1.12;
+    }
+
+    .ninety-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+      max-width: 900px;
+    }
+
+    .month-card {
+      min-height: 260px;
+      padding: 24px;
+      border-radius: var(--radius);
+      background: rgba(21, 21, 21, .84);
+      border: 1px solid var(--line);
+      display: grid;
+      align-content: space-between;
+    }
+
+    .month-card.active {
+      border-color: rgba(114, 255, 0, .62);
+      background: linear-gradient(180deg, rgba(114, 255, 0, .12), rgba(21, 21, 21, .86));
+    }
+
+    .month-card small {
+      color: var(--muted-2);
+      font-size: 13px;
+      font-weight: 900;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .month-card b {
+      font-family: Impact, "Arial Black", sans-serif;
+      font-size: clamp(42px, 4vw, 64px);
+      text-transform: uppercase;
+      line-height: .94;
+    }
+
+    .month-card p {
+      color: var(--muted);
+      font-size: 18px;
+      font-weight: 800;
+      line-height: 1.2;
+    }
+
+    .sidebar {
+      position: absolute;
+      top: 34px;
+      right: 34px;
+      bottom: 34px;
+      width: 306px;
+      min-height: 0;
+      display: grid;
+      grid-template-rows: auto auto 1fr auto;
+      gap: 16px;
+      padding: 18px;
+      border-left: 1px solid var(--line);
+      background: rgba(15, 15, 15, .58);
+      z-index: 5;
+    }
+
+    .dashboard-title {
+      display: grid;
+      gap: 4px;
+    }
+
+    .dashboard-title small {
+      color: var(--green);
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: 1.8px;
+      text-transform: uppercase;
+    }
+
+    .dashboard-title b {
+      color: var(--white);
+      font-family: Impact, "Arial Black", sans-serif;
+      font-size: 36px;
+      line-height: .9;
+      text-transform: uppercase;
+    }
+
+    .progress-panel {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 12px;
+      align-items: center;
+      padding: 14px;
+      border-radius: var(--radius);
+      border: 1px solid rgba(114, 255, 0, .32);
+      background: rgba(114, 255, 0, .08);
+    }
+
+    .progress-panel span {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+      line-height: 1.2;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .progress-panel strong {
+      color: var(--green);
+      font-family: Impact, "Arial Black", sans-serif;
+      font-size: 38px;
+      line-height: .9;
+    }
+
+    .timeline {
+      position: relative;
+      display: grid;
+      gap: 10px;
+      align-content: start;
+      padding-top: 2px;
+    }
+
+    .timeline::before {
+      content: "";
+      position: absolute;
+      left: 11px;
+      top: 8px;
+      bottom: 8px;
+      width: 2px;
+      background: rgba(255, 255, 255, .16);
+    }
+
+    .timeline-item {
+      position: relative;
+      display: grid;
+      grid-template-columns: 26px 1fr;
+      gap: 9px;
+      align-items: start;
+      min-height: 54px;
+    }
+
+    .timeline-dot {
+      position: relative;
+      z-index: 2;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      border: 2px solid rgba(255, 255, 255, .26);
+      background: var(--panel);
+      display: grid;
+      place-items: center;
+      color: transparent;
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .timeline-item.done .timeline-dot,
+    .timeline-item.active .timeline-dot {
+      border-color: var(--green);
+      background: var(--green);
+      color: #0d0d0d;
+      box-shadow: 0 0 18px rgba(114, 255, 0, .38);
+    }
+
+    .timeline-copy {
+      display: grid;
+      gap: 3px;
+      padding-bottom: 8px;
+    }
+
+    .timeline-copy b {
+      color: var(--white);
+      font-size: 14px;
+      font-weight: 900;
+      line-height: 1.1;
+    }
+
+    .timeline-copy span {
+      color: var(--muted-2);
+      font-size: 12px;
+      font-weight: 700;
+      line-height: 1.15;
+    }
+
+    .timeline-item.active .timeline-copy b {
+      color: var(--green);
+    }
+
+    .controls {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .nav-btn {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, .24);
+      color: var(--white);
+      background: rgba(255, 255, 255, .06);
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      font-size: 22px;
+      font-weight: 900;
+    }
+
+    .nav-btn:hover,
+    .nav-btn:focus-visible {
+      border-color: var(--green);
+      color: var(--green);
+      outline: none;
+    }
+
+    .access-btn {
+      grid-column: 1 / -1;
+      width: 100%;
+      min-height: 42px;
+      border: 1px solid rgba(114, 255, 0, .48);
+      border-radius: var(--radius);
+      background: var(--green);
+      color: #101010;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 950;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+    }
+
+    .access-btn:hover,
+    .access-btn:focus-visible {
+      outline: none;
+      box-shadow: 0 0 22px rgba(114, 255, 0, .28);
+    }
+
+    .slide-counter {
+      color: var(--muted-2);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .footer-note {
+      position: absolute;
+      left: 34px;
+      bottom: 20px;
+      color: rgba(255, 255, 255, .36);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 1.8px;
+      text-transform: uppercase;
+      z-index: 6;
+    }
+
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      display: none;
+      place-items: center;
+      padding: 22px;
+      background: rgba(0, 0, 0, .76);
+      z-index: 50;
+    }
+
+    .modal-backdrop.open {
+      display: grid;
+    }
+
+    .access-modal {
+      width: min(1120px, 100%);
+      max-height: min(860px, calc(100vh - 44px));
+      overflow: auto;
+      border: 1px solid rgba(114, 255, 0, .42);
+      border-radius: var(--radius);
+      background:
+        radial-gradient(circle at 78% 0%, rgba(114, 255, 0, .12), transparent 28%),
+        #151515;
+      color: var(--white);
+      box-shadow: var(--shadow);
+    }
+
+    .modal-head {
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 18px;
+      padding: 18px 20px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(21, 21, 21, .96);
+    }
+
+    .modal-title {
+      display: grid;
+      gap: 5px;
+    }
+
+    .modal-title small {
+      color: var(--green);
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: 1.8px;
+      text-transform: uppercase;
+    }
+
+    .modal-title b {
+      font-family: Impact, "Arial Black", sans-serif;
+      font-size: clamp(30px, 4vw, 50px);
+      line-height: .9;
+      text-transform: uppercase;
+    }
+
+    .close-modal {
+      width: 42px;
+      height: 42px;
+      border: 1px solid rgba(255, 255, 255, .24);
+      border-radius: 50%;
+      background: rgba(255, 255, 255, .06);
+      color: var(--white);
+      cursor: pointer;
+      font-size: 26px;
+      font-weight: 900;
+      line-height: 1;
+    }
+
+    .close-modal:hover,
+    .close-modal:focus-visible {
+      border-color: var(--green);
+      color: var(--green);
+      outline: none;
+    }
+
+    .access-form {
+      display: grid;
+      gap: 18px;
+      padding: 20px;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .field,
+    .access-item {
+      display: grid;
+      gap: 7px;
+    }
+
+    .field label,
+    .access-item label {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .field input,
+    .field textarea,
+    .field select,
+    .access-item input,
+    .access-item textarea,
+    .access-item select {
+      width: 100%;
+      border: 1px solid rgba(255, 255, 255, .16);
+      border-radius: var(--radius);
+      background: rgba(255, 255, 255, .06);
+      color: var(--white);
+      padding: 12px;
+      outline: none;
+    }
+
+    .field textarea,
+    .access-item textarea {
+      min-height: 88px;
+      resize: vertical;
+    }
+
+    .field input:focus,
+    .field textarea:focus,
+    .field select:focus,
+    .access-item input:focus,
+    .access-item textarea:focus,
+    .access-item select:focus {
+      border-color: var(--green);
+      box-shadow: 0 0 0 3px rgba(114, 255, 0, .11);
+    }
+
+    .access-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .access-item {
+      grid-template-columns: 1.1fr .9fr .9fr 1.5fr;
+      align-items: end;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: rgba(255, 255, 255, .04);
+    }
+
+    .form-actions {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 14px;
+      align-items: center;
+      padding-top: 4px;
+    }
+
+    .status-message {
+      min-height: 42px;
+      display: grid;
+      align-items: center;
+      padding: 10px 12px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      color: var(--muted);
+      background: rgba(255, 255, 255, .04);
+      font-size: 13px;
+      font-weight: 800;
+      line-height: 1.25;
+    }
+
+    .status-message.success {
+      border-color: rgba(114, 255, 0, .44);
+      color: var(--green);
+      background: rgba(114, 255, 0, .08);
+    }
+
+    .status-message.error {
+      border-color: rgba(255, 95, 95, .44);
+      color: #ff9c9c;
+      background: rgba(255, 95, 95, .08);
+    }
+
+    .submit-access {
+      min-height: 48px;
+      border: 1px solid rgba(114, 255, 0, .5);
+      border-radius: var(--radius);
+      background: var(--green);
+      color: #101010;
+      cursor: pointer;
+      padding: 0 20px;
+      font-size: 13px;
+      font-weight: 950;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+    }
+
+    .submit-access:disabled {
+      cursor: wait;
+      opacity: .72;
+    }
+
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      max-width: 850px;
+    }
+
+    .pill {
+      padding: 11px 13px;
+      border: 1px solid rgba(114, 255, 0, .32);
+      border-radius: 999px;
+      color: var(--white);
+      background: rgba(114, 255, 0, .08);
+      font-size: 15px;
+      font-weight: 900;
+    }
+
+    .closing {
+      display: grid;
+      gap: 18px;
+      max-width: 920px;
+    }
+
+    .closing-line {
+      padding: 20px 22px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: rgba(21, 21, 21, .82);
+      color: var(--white);
+      font-size: clamp(24px, 2.4vw, 38px);
+      font-weight: 900;
+      line-height: 1.08;
+    }
+
+    .closing-line.highlight {
+      border-color: rgba(114, 255, 0, .48);
+      color: var(--green);
+      background: rgba(114, 255, 0, .09);
+    }
+
+    @media (max-width: 900px) {
+      body {
+        overflow: auto;
+      }
+
+      .deck-shell {
+        min-height: 100vh;
+        height: auto;
+        padding: 0;
+      }
+
+      .deck {
+        width: 100%;
+        min-height: 100vh;
+        aspect-ratio: auto;
+        border: 0;
+      }
+
+      .slide {
+        grid-template-columns: 1fr;
+        padding: 22px 18px 160px;
+        min-height: 100vh;
+      }
+
+      .slide.active {
+        position: relative;
+      }
+
+      .slide:not(.active) {
+        display: none;
+      }
+
+      .sidebar {
+        position: fixed;
+        top: auto;
+        width: auto;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        grid-template-columns: 1fr auto;
+        grid-template-rows: auto auto;
+        gap: 10px;
+        padding: 10px 14px;
+        border-left: 0;
+        border-top: 1px solid var(--line);
+        background: rgba(15, 15, 15, .96);
+      }
+
+      .dashboard-title b {
+        font-size: 24px;
+      }
+
+      .progress-panel {
+        padding: 10px;
+      }
+
+      .timeline {
+        display: none;
+      }
+
+      .controls {
+        grid-column: 1 / -1;
+      }
+
+      .stat-grid,
+      .week-grid,
+      .growth-row,
+      .two-col,
+      .metric-grid,
+      .routine-grid,
+      .ninety-grid,
+      .form-grid,
+      .access-item,
+      .form-actions {
+        grid-template-columns: 1fr;
+      }
+
+      .access-modal {
+        max-height: calc(100vh - 24px);
+      }
+
+      .growth-step:not(:last-child)::after {
+        display: none;
+      }
+
+      .brand img {
+        width: 132px;
+      }
+
+      .section-label {
+        display: none;
+      }
+
+      .footer-note {
+        display: none;
+      }
+    }
+
+    @media print {
+      body {
+        overflow: visible;
+        background: #fff;
+      }
+
+      .deck-shell {
+        display: block;
+        width: auto;
+        height: auto;
+        padding: 0;
+        background: #fff;
+      }
+
+      .deck {
+        width: 100%;
+        height: auto;
+        aspect-ratio: auto;
+        border: 0;
+        box-shadow: none;
+        overflow: visible;
+      }
+
+      .deck::before,
+      .deck::after,
+      .sidebar,
+      .footer-note {
+        display: none;
+      }
+
+      .slide,
+      .slide.active {
+        position: relative;
+        opacity: 1;
+        transform: none;
+        display: grid;
+        width: 100vw;
+        height: 56.25vw;
+        page-break-after: always;
+        grid-template-columns: 1fr;
+        padding: 34px;
+        background: var(--bg);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="deck-shell">
+    <main class="deck" aria-label="Apresentacao de onboarding Last One">
+      <section class="slide active" data-stage="1">
+        <div class="main">
+          <header class="topbar">
+            <div class="brand"><img src="assets/last-one-logo-dark-bg.png" alt="Last One" /></div>
+            <div class="section-label">Area exclusiva de onboarding</div>
+            <div class="slide-number">Slide 01</div>
+          </header>
+          <div class="content">
+            <div class="accent-line"></div>
+            <h1>Bem-vindo a <span class="green">Last One</span></h1>
+            <p class="lead">O ponto de partida para transformar trafego, atendimento e rotina comercial em um sistema de crescimento previsivel.</p>
+            <div class="stat-grid" aria-label="Quem somos">
+              <div class="stat"><strong>+130</strong><span>farmacias atendidas</span></div>
+              <div class="stat"><strong>RX</strong><span>especialistas em farmacias de manipulacao</span></div>
+              <div class="stat"><strong>SJRP</strong><span>escritorio fisico em Sao Jose do Rio Preto</span></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-stage="1">
+        <div class="main">
+          <header class="topbar">
+            <div class="brand"><img src="assets/last-one-logo-dark-bg.png" alt="Last One" /></div>
+            <div class="section-label">Primeiros passos da operacao</div>
+            <div class="slide-number">Slide 02</div>
+          </header>
+          <div class="content">
+            <h2>O que vai acontecer <span class="green">agora</span></h2>
+            <div class="week-grid">
+              <article class="week-card">
+                <div class="week-title">Semana 1</div>
+                <ul class="check-list">
+                  <li>Coleta de acessos</li>
+                  <li>Landing Page</li>
+                  <li>Tags</li>
+                  <li>Configuracao Google Ads</li>
+                </ul>
+              </article>
+              <article class="week-card">
+                <div class="week-title">Semana 2</div>
+                <ul class="check-list">
+                  <li>Campanha no ar</li>
+                  <li>Primeiros leads</li>
+                  <li>Monitoramento inicial</li>
+                </ul>
+              </article>
+              <article class="week-card">
+                <div class="week-title">Semanas 3 e 4</div>
+                <ul class="check-list">
+                  <li>Otimizacoes</li>
+                  <li>Ajustes</li>
+                  <li>Analise de palavras-chave</li>
+                </ul>
+              </article>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-stage="2">
+        <div class="main">
+          <header class="topbar">
+            <div class="brand"><img src="assets/last-one-logo-dark-bg.png" alt="Last One" /></div>
+            <div class="section-label">Jornada dos 90 Dias</div>
+            <div class="slide-number">Slide 03</div>
+          </header>
+          <div class="content">
+            <h2>Como funciona o <span class="green">crescimento</span></h2>
+            <div class="growth-row" aria-label="Grafico de crescimento">
+              <div class="growth-step"><small>Mes 1</small><b>Construcao</b></div>
+              <div class="growth-step"><small>Mes 2</small><b>Otimizacao</b></div>
+              <div class="growth-step"><small>Mes 3</small><b>Escala</b></div>
+            </div>
+            <p class="quote">"O objetivo do primeiro mes nao e ficar rico. E construir uma maquina previsivel."</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-stage="2">
+        <div class="main">
+          <header class="topbar">
+            <div class="brand"><img src="assets/last-one-logo-dark-bg.png" alt="Last One" /></div>
+            <div class="section-label">Responsabilidade Last One</div>
+            <div class="slide-number">Slide 04</div>
+          </header>
+          <div class="content">
+            <h2>O que depende da <span class="green">Last One</span></h2>
+            <div class="two-col">
+              <ul class="check-list">
+                <li>Landing Page</li>
+                <li>Estrategia</li>
+                <li>Google Ads</li>
+              </ul>
+              <ul class="check-list">
+                <li>Otimizacoes</li>
+                <li>Relatorios</li>
+                <li>Consultoria</li>
+              </ul>
+            </div>
+            <p class="lead">Nossa entrega organiza a estrutura, mede os dados e ajusta a rota para gerar previsibilidade.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-stage="2">
+        <div class="main">
+          <header class="topbar">
+            <div class="brand"><img src="assets/last-one-logo-dark-bg.png" alt="Last One" /></div>
+            <div class="section-label">Responsabilidade da farmacia</div>
+            <div class="slide-number">Slide 05</div>
+          </header>
+          <div class="content">
+            <h2>O que depende da <span class="green">farmacia</span></h2>
+            <div class="two-col">
+              <ul class="check-list">
+                <li>Tempo de resposta</li>
+                <li>Follow-up</li>
+                <li>Conversao dos orcamentos</li>
+              </ul>
+              <ul class="check-list">
+                <li>Recompra</li>
+                <li>Avaliacoes Google</li>
+                <li>Qualidade do atendimento</li>
+              </ul>
+            </div>
+            <p class="lead">Mesmo com a campanha certa, a venda acontece quando o atendimento transforma interesse em orcamento e orcamento em pedido.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-stage="3">
+        <div class="main">
+          <header class="topbar">
+            <div class="brand"><img src="assets/last-one-logo-dark-bg.png" alt="Last One" /></div>
+            <div class="section-label">Quebra de objecoes</div>
+            <div class="slide-number">Slide 06</div>
+          </header>
+          <div class="content">
+            <h2>O erro que faz farmacias <span class="green">fracassarem</span></h2>
+            <div class="two-col">
+              <article class="comparison-card good">
+                <div class="comparison-title">Farmacia A <span>atendimento rapido</span></div>
+                <div class="flow">
+                  <div class="flow-item">100 Leads</div>
+                  <div class="flow-arrow">v</div>
+                  <div class="flow-item">Resposta em 2 minutos</div>
+                  <div class="flow-arrow">v</div>
+                </div>
+                <div class="result">40 vendas</div>
+              </article>
+              <article class="comparison-card bad">
+                <div class="comparison-title">Farmacia B <span>atendimento lento</span></div>
+                <div class="flow">
+                  <div class="flow-item">100 Leads</div>
+                  <div class="flow-arrow">v</div>
+                  <div class="flow-item">Resposta em 40 minutos</div>
+                  <div class="flow-arrow">v</div>
+                </div>
+                <div class="result">12 vendas</div>
+              </article>
+            </div>
+            <p class="quote">Mesmo trafego. Resultado diferente.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-stage="3">
+        <div class="main">
+          <header class="topbar">
+            <div class="brand"><img src="assets/last-one-logo-dark-bg.png" alt="Last One" /></div>
+            <div class="section-label">Indicadores de sucesso</div>
+            <div class="slide-number">Slide 07</div>
+          </header>
+          <div class="content">
+            <h2>Como mediremos <span class="green">sucesso</span></h2>
+            <p class="lead">Nao vamos olhar apenas faturamento. Vamos medir a operacao inteira.</p>
+            <div class="metric-grid">
+              <div class="metric"><b>01</b><span>Leads gerados</span></div>
+              <div class="metric"><b>02</b><span>CPL</span></div>
+              <div class="metric"><b>03</b><span>Taxa de conversao</span></div>
+              <div class="metric"><b>04</b><span>Tempo de resposta</span></div>
+              <div class="metric"><b>05</b><span>Orcamentos enviados</span></div>
+              <div class="metric"><b>06</b><span>Vendas</span></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-stage="4">
+        <div class="main">
+          <header class="topbar">
+            <div class="brand"><img src="assets/last-one-logo-dark-bg.png" alt="Last One" /></div>
+            <div class="section-label">Rotina de acompanhamento</div>
+            <div class="slide-number">Slide 08</div>
+          </header>
+          <div class="content">
+            <h2>Nossa rotina de <span class="green">acompanhamento</span></h2>
+            <div class="routine-grid">
+              <div class="mini-card"><strong>Segunda</strong><span>Relatorio completo as 14h</span></div>
+              <div class="mini-card"><strong>Sexta</strong><span>Aviso de acompanhamento diario</span></div>
+              <div class="mini-card"><strong>Semanal</strong><span>Ajustes estrategicos</span></div>
+              <div class="mini-card"><strong>Mensal</strong><span>Revisao de crescimento</span></div>
+            </div>
+            <p class="lead">O cliente recebe um relatorio completo por semana. A gestao e o acompanhamento das campanhas acontecem todos os dias.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-stage="5">
+        <div class="main">
+          <header class="topbar">
+            <div class="brand"><img src="assets/last-one-logo-dark-bg.png" alt="Last One" /></div>
+            <div class="section-label">Dashboard Jornada dos 90 Dias</div>
+            <div class="slide-number">Slide 09</div>
+          </header>
+          <div class="content">
+            <h2>Metas dos primeiros <span class="green">90 dias</span></h2>
+            <div class="ninety-grid">
+              <article class="month-card active">
+                <small>Mes 1</small>
+                <b>Validar</b>
+                <p>Estrutura pronta, dados confiaveis, primeiros leads e leitura real da operacao.</p>
+              </article>
+              <article class="month-card">
+                <small>Mes 2</small>
+                <b>Otimizar</b>
+                <p>Ajustar palavras-chave, criativos, pagina, atendimento e qualidade dos orcamentos.</p>
+              </article>
+              <article class="month-card">
+                <small>Mes 3</small>
+                <b>Escalar</b>
+                <p>Aumentar investimento com mais previsibilidade, volume e controle de retorno.</p>
+              </article>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-stage="5">
+        <div class="main">
+          <header class="topbar">
+            <div class="brand"><img src="assets/last-one-logo-dark-bg.png" alt="Last One" /></div>
+            <div class="section-label">Compromisso de crescimento</div>
+            <div class="slide-number">Slide 10</div>
+          </header>
+          <div class="content">
+            <h2>Compromisso entre as <span class="green">partes</span></h2>
+            <div class="closing">
+              <div class="closing-line">A Last One nao vende trafego.</div>
+              <div class="closing-line highlight">A Last One constroi previsibilidade.</div>
+              <div class="closing-line">A farmacia nao esta contratando anuncios.</div>
+              <div class="closing-line highlight">Esta contratando um sistema de crescimento.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <aside class="sidebar" aria-label="Dashboard Jornada dos 90 Dias">
+        <div class="dashboard-title">
+          <small>Dashboard</small>
+          <b>Jornada dos 90 Dias</b>
+        </div>
+        <div class="progress-panel">
+          <span>Etapa atual do cliente</span>
+          <strong id="stagePercent">20%</strong>
+        </div>
+        <div class="timeline" id="timeline">
+          <div class="timeline-item active" data-step="1">
+            <div class="timeline-dot">1</div>
+            <div class="timeline-copy"><b>Onboarding</b><span>Boas-vindas e alinhamento</span></div>
+          </div>
+          <div class="timeline-item" data-step="2">
+            <div class="timeline-dot">2</div>
+            <div class="timeline-copy"><b>Construcao</b><span>Google Ads, LP e campanha</span></div>
+          </div>
+          <div class="timeline-item" data-step="3">
+            <div class="timeline-dot">3</div>
+            <div class="timeline-copy"><b>Primeiros leads</b><span>Campanha no ar e atendimento</span></div>
+          </div>
+          <div class="timeline-item" data-step="4">
+            <div class="timeline-dot">4</div>
+            <div class="timeline-copy"><b>Otimizacao</b><span>Ajustes semanais e leitura de dados</span></div>
+          </div>
+          <div class="timeline-item" data-step="5">
+            <div class="timeline-dot">5</div>
+            <div class="timeline-copy"><b>Escala</b><span>Revisao mensal e crescimento</span></div>
+          </div>
+        </div>
+        <div class="controls">
+          <button class="access-btn" id="openAccessModal" type="button">Coletar acessos</button>
+          <button class="nav-btn" id="prevSlide" type="button" aria-label="Slide anterior">&#8249;</button>
+          <div class="slide-counter"><span id="currentSlide">01</span> / 10</div>
+          <button class="nav-btn" id="nextSlide" type="button" aria-label="Proximo slide">&#8250;</button>
+        </div>
+      </aside>
+
+      <div class="footer-note">Last One Company | Onboarding de cliente</div>
+    </main>
+  </div>
+
+  <div class="modal-backdrop" id="accessModal" aria-hidden="true">
+    <section class="access-modal" role="dialog" aria-modal="true" aria-labelledby="accessModalTitle">
+      <header class="modal-head">
+        <div class="modal-title">
+          <small>Area exclusiva de onboarding</small>
+          <b id="accessModalTitle">Coleta de acessos</b>
+        </div>
+        <button class="close-modal" id="closeAccessModal" type="button" aria-label="Fechar coleta">&times;</button>
+      </header>
+
+      <form class="access-form" id="accessForm">
+        <div class="form-grid">
+          <div class="field">
+            <label for="clientName">Nome da farmacia</label>
+            <input id="clientName" name="clientName" autocomplete="organization" required />
+          </div>
+          <div class="field">
+            <label for="city">Cidade / UF</label>
+            <input id="city" name="city" autocomplete="address-level2" />
+          </div>
+          <div class="field">
+            <label for="serviceArea">Localizacao que atua</label>
+            <input id="serviceArea" name="serviceArea" placeholder="Ex.: Sao Jose do Rio Preto e regiao" autocomplete="address-level2" />
+          </div>
+          <div class="field">
+            <label for="meetingDate">Data da reuniao</label>
+            <input id="meetingDate" name="meetingDate" type="date" />
+          </div>
+          <div class="field">
+            <label for="xrayDate">Data do primeiro raio X</label>
+            <input id="xrayDate" name="xrayDate" type="date" />
+          </div>
+          <div class="field">
+            <label for="ownerName">Responsavel da farmacia</label>
+            <input id="ownerName" name="ownerName" autocomplete="name" />
+          </div>
+          <div class="field">
+            <label for="ownerWhatsapp">WhatsApp do responsavel</label>
+            <input id="ownerWhatsapp" name="ownerWhatsapp" inputmode="tel" autocomplete="tel" />
+          </div>
+          <div class="field">
+            <label for="leadPhone">Numero que vai receber os leads</label>
+            <input id="leadPhone" name="leadPhone" inputmode="tel" autocomplete="tel" placeholder="WhatsApp comercial da farmacia" />
+          </div>
+          <div class="field">
+            <label for="lastOneOwner">Responsavel Last One</label>
+            <input id="lastOneOwner" name="lastOneOwner" />
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="generalNotes">Observacoes da reuniao</label>
+          <textarea id="generalNotes" name="generalNotes" placeholder="Ex.: combinado sobre atendimento, horario de resposta, regiao prioritaria, data do raio X..."></textarea>
+        </div>
+
+        <div class="access-list" aria-label="Checklist de acessos">
+          <div class="access-item" data-access="Google Ads">
+            <div class="field"><label>Ativo</label><input value="Google Ads" readonly /></div>
+            <div class="field"><label>Status</label><select><option>Pendente</option><option>Convite enviado</option><option>Acesso concedido</option><option>Nao possui</option><option>Validar manualmente</option></select></div>
+            <div class="field"><label>E-mail / ID</label><input placeholder="ID da conta ou e-mail" /></div>
+            <div class="field"><label>Observacao</label><input placeholder="CID, e-mail administrador, pendencia" /></div>
+          </div>
+          <div class="access-item" data-access="Google Meu Negocio">
+            <div class="field"><label>Ativo</label><input value="Google Meu Negocio" readonly /></div>
+            <div class="field"><label>Status</label><select><option>Pendente</option><option>Convite enviado</option><option>Acesso concedido</option><option>Nao possui</option><option>Validar manualmente</option></select></div>
+            <div class="field"><label>E-mail / ID</label><input placeholder="E-mail do perfil ou nome da unidade" /></div>
+            <div class="field"><label>Observacao</label><input placeholder="Acesso sera coletado em breve" /></div>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <div class="status-message" id="accessStatus">Ao enviar, o Google Drive configurado cria a pasta do cliente e a subpasta Acessos.</div>
+          <button class="submit-access" id="submitAccess" type="submit">Enviar para o Drive</button>
+        </div>
+      </form>
+    </section>
+  </div>
+
+  <script>
+    const CONFIG = {
+      ONBOARDING_WEBHOOK_URL: "https://script.google.com/macros/s/AKfycbzHfvrSP-QxkORB_ABH4R578abFLTLq4AUrR8NKcvexQ364FzNZaY0H1Hf44cVHB8K9/exec"
+    };
+
+    const slides = Array.from(document.querySelectorAll(".slide"));
+    const timelineItems = Array.from(document.querySelectorAll(".timeline-item"));
+    const currentSlide = document.querySelector("#currentSlide");
+    const stagePercent = document.querySelector("#stagePercent");
+    const prevButton = document.querySelector("#prevSlide");
+    const nextButton = document.querySelector("#nextSlide");
+    const accessModal = document.querySelector("#accessModal");
+    const openAccessModal = document.querySelector("#openAccessModal");
+    const closeAccessModal = document.querySelector("#closeAccessModal");
+    const accessForm = document.querySelector("#accessForm");
+    const accessStatus = document.querySelector("#accessStatus");
+    const submitAccess = document.querySelector("#submitAccess");
+    let activeIndex = 0;
+
+    function pad(number) {
+      return String(number).padStart(2, "0");
+    }
+
+    function showSlide(index) {
+      activeIndex = Math.max(0, Math.min(index, slides.length - 1));
+      slides.forEach((slide, slideIndex) => {
+        slide.classList.toggle("active", slideIndex === activeIndex);
+      });
+
+      const stage = Number(slides[activeIndex].dataset.stage || 1);
+      timelineItems.forEach((item) => {
+        const step = Number(item.dataset.step);
+        item.classList.toggle("done", step < stage);
+        item.classList.toggle("active", step === stage);
+      });
+
+      currentSlide.textContent = pad(activeIndex + 1);
+      stagePercent.textContent = `${Math.round((stage / 5) * 100)}%`;
+    }
+
+    prevButton.addEventListener("click", () => showSlide(activeIndex - 1));
+    nextButton.addEventListener("click", () => showSlide(activeIndex + 1));
+
+    function setAccessStatus(message, type) {
+      accessStatus.textContent = message;
+      accessStatus.classList.remove("success", "error");
+      if (type) accessStatus.classList.add(type);
+    }
+
+    function toggleAccessModal(open) {
+      accessModal.classList.toggle("open", open);
+      accessModal.setAttribute("aria-hidden", String(!open));
+      if (open) {
+        const today = new Date().toISOString().slice(0, 10);
+        const meetingDate = document.querySelector("#meetingDate");
+        if (!meetingDate.value) meetingDate.value = today;
+        document.querySelector(".access-modal").scrollTop = 0;
+        setTimeout(() => {
+          document.querySelector(".access-modal").scrollTop = 0;
+          document.querySelector("#clientName").focus({ preventScroll: true });
+        }, 50);
+      }
+    }
+
+    function collectAccessPayload() {
+      const data = new FormData(accessForm);
+      const accesses = Array.from(document.querySelectorAll(".access-item")).map((item) => {
+        const fields = item.querySelectorAll("input, select");
+        return {
+          name: item.dataset.access,
+          status: fields[1].value,
+          account: fields[2].value.trim(),
+          notes: fields[3].value.trim()
+        };
+      });
+
+      return {
+        clientName: String(data.get("clientName") || "").trim(),
+        city: String(data.get("city") || "").trim(),
+        serviceArea: String(data.get("serviceArea") || "").trim(),
+        meetingDate: String(data.get("meetingDate") || "").trim(),
+        xrayDate: String(data.get("xrayDate") || "").trim(),
+        ownerName: String(data.get("ownerName") || "").trim(),
+        ownerWhatsapp: String(data.get("ownerWhatsapp") || "").trim(),
+        leadPhone: String(data.get("leadPhone") || "").trim(),
+        lastOneOwner: String(data.get("lastOneOwner") || "").trim(),
+        generalNotes: String(data.get("generalNotes") || "").trim(),
+        source: "Apresentacao Onboarding Last One",
+        createdAt: new Date().toISOString(),
+        accesses
+      };
+    }
+
+    async function submitAccessPayload(event) {
+      event.preventDefault();
+      const payload = collectAccessPayload();
+
+      if (!payload.clientName) {
+        setAccessStatus("Preencha o nome da farmacia antes de enviar.", "error");
+        return;
+      }
+
+      if (!CONFIG.ONBOARDING_WEBHOOK_URL) {
+        setAccessStatus("Configure a URL do Apps Script em CONFIG.ONBOARDING_WEBHOOK_URL antes da reuniao.", "error");
+        return;
+      }
+
+      submitAccess.disabled = true;
+      setAccessStatus("Enviando para o Google Drive configurado...", "");
+
+      try {
+        await fetch(CONFIG.ONBOARDING_WEBHOOK_URL, {
+          method: "POST",
+          mode: "no-cors",
+          headers: { "Content-Type": "text/plain;charset=utf-8" },
+          body: JSON.stringify(payload)
+        });
+        setAccessStatus("Envio disparado. Confira no Drive a pasta do cliente com a subpasta Acessos.", "success");
+        accessForm.reset();
+      } catch (error) {
+        setAccessStatus("Nao foi possivel enviar. Verifique internet, URL do Apps Script e permissao do Web App.", "error");
+      } finally {
+        submitAccess.disabled = false;
+      }
+    }
+
+    openAccessModal.addEventListener("click", () => toggleAccessModal(true));
+    closeAccessModal.addEventListener("click", () => toggleAccessModal(false));
+    accessModal.addEventListener("click", (event) => {
+      if (event.target === accessModal) toggleAccessModal(false);
+    });
+    accessForm.addEventListener("submit", submitAccessPayload);
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && accessModal.classList.contains("open")) {
+        toggleAccessModal(false);
+        return;
+      }
+
+      if (event.key === "ArrowRight" || event.key === " ") {
+        if (accessModal.classList.contains("open")) return;
+        event.preventDefault();
+        showSlide(activeIndex + 1);
+      }
+
+      if (event.key === "ArrowLeft") {
+        if (accessModal.classList.contains("open")) return;
+        event.preventDefault();
+        showSlide(activeIndex - 1);
+      }
+    });
+
+    showSlide(0);
+  </script>
+</body>
+</html>

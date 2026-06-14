@@ -1,0 +1,8 @@
+.DS_Store
+*.zip
+*.pdf
+*.ppt
+*.pptx
+outputs/
+canva-export/
+preview-*.png
