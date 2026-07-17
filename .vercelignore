@@ -6,4 +6,5 @@
 outputs/
 canva-export/
 preview-*.png
-.vercel
+post-aviso-consulfarma.html
+render-post-aviso-consulfarma.js
