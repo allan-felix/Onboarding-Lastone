@@ -245,6 +245,14 @@
       font-family: Impact, "Arial Black", sans-serif;
       font-size: clamp(32px, 3.5vw, 54px);
       line-height: 1;
+      max-width: 100%;
+      overflow-wrap: anywhere;
+    }
+
+    .stat strong.text-fit {
+      font-size: clamp(24px, 2.35vw, 36px);
+      line-height: .96;
+      white-space: nowrap;
     }
 
     .stat span {
@@ -1166,7 +1174,7 @@
             <p class="lead">O ponto de partida para transformar trafego, atendimento e rotina comercial em um sistema de crescimento previsivel.</p>
             <div class="stat-grid" aria-label="Quem somos">
               <div class="stat"><strong>+170</strong><span>farmacias atendidas</span></div>
-              <div class="stat"><strong>ESPECIALISTA</strong><span>em farmacias de manipulacao</span></div>
+              <div class="stat"><strong class="text-fit">ESPECIALISTA</strong><span>em farmacias de manipulacao</span></div>
               <div class="stat"><strong>SJRP</strong><span>escritorio fisico em Sao Jose do Rio Preto</span></div>
             </div>
           </div>
