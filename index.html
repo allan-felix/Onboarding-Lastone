@@ -1247,7 +1247,7 @@
               <article class="week-card">
                 <div class="week-title">Primeiro dia</div>
                 <ul class="check-list">
-                  <li>Coleta de informacoes</li>
+                  <li>Coleta de informações</li>
                   <li>Landing Page</li>
                   <li>Tags</li>
                   <li>Configuracao Google Ads</li>
@@ -1340,7 +1340,7 @@
               <div class="lp-item mini-card"><b>Servicos</b><span>Veterinaria, homeopatia, injetaveis e colirios</span></div>
               <div class="lp-item mini-card"><b>Oferta</b><span>Desconto autorizado: 5%, 10% ou 15%</span></div>
               <div class="lp-item mini-card"><b>Atendimento</b><span>Horario comercial e responsavel pelos leads</span></div>
-              <div class="lp-item mini-card"><b>Praca</b><span>Habitantes, cidades ao redor e entrega no mesmo dia</span></div>
+              <div class="lp-item mini-card"><b>Praça</b><span>Habitantes, cidades ao redor e entrega no mesmo dia</span></div>
             </div>
           </div>
         </div>
@@ -1398,7 +1398,7 @@
           </div>
         </div>
         <div class="controls">
-          <button class="access-btn" id="openAccessModal" type="button">Coleta de informacoes</button>
+          <button class="access-btn" id="openAccessModal" type="button">Coleta de informações</button>
           <button class="nav-btn" id="prevSlide" type="button" aria-label="Slide anterior">&#8249;</button>
           <div class="slide-counter"><span id="currentSlide">01</span> / 06</div>
           <button class="nav-btn" id="nextSlide" type="button" aria-label="Proximo slide">&#8250;</button>
@@ -1414,7 +1414,7 @@
       <header class="modal-head">
         <div class="modal-title">
           <small>Area exclusiva de onboarding</small>
-          <b id="accessModalTitle">Coleta de informacoes</b>
+          <b id="accessModalTitle">Coleta de informações</b>
         </div>
         <button class="close-modal" id="closeAccessModal" type="button" aria-label="Fechar coleta">&times;</button>
       </header>
@@ -1526,7 +1526,7 @@
         </div>
 
         <div class="form-actions">
-          <div class="status-message" id="accessStatus">Ao enviar, o Google Drive cria a pasta do cliente, a pasta Informacoes e um documento organizado para a LP.</div>
+          <div class="status-message" id="accessStatus">Ao enviar, o Google Drive cria a pasta do cliente, a pasta Informações e um documento organizado para a LP.</div>
           <button class="submit-access" id="submitAccess" type="submit">Enviar para o Drive</button>
         </div>
       </form>
@@ -1666,7 +1666,7 @@
           headers: { "Content-Type": "text/plain;charset=utf-8" },
           body: JSON.stringify(payload)
         });
-        setAccessStatus("Envio disparado. Confira no Drive a pasta do cliente com o documento de informacoes.", "success");
+        setAccessStatus("Envio disparado. Confira no Drive a pasta do cliente com o documento de informações.", "success");
         accessForm.reset();
       } catch (error) {
         setAccessStatus("Nao foi possivel enviar. Verifique internet, URL do Apps Script e permissao do Web App.", "error");

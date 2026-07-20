@@ -1,7 +1,7 @@
 const CONFIG = {
   DRIVE_PARENT_FOLDER_ID: "1HUSwYNFGcCItXVrjLGjitKhn28fBUR-V",
   SPREADSHEET_NAME: "Controle de Onboarding Last One",
-  INFO_FILE_PREFIX: "Informacoes - "
+  INFO_FILE_PREFIX: "Informações - "
 };
 
 function doPost(e) {
@@ -11,7 +11,7 @@ function doPost(e) {
 
     const parentFolder = DriveApp.getFolderById(CONFIG.DRIVE_PARENT_FOLDER_ID);
     const clientFolder = getOrCreateFolder_(parentFolder, sanitizeName_(payload.clientName));
-    const infoFolder = getOrCreateFolder_(clientFolder, "Informacoes");
+    const infoFolder = getOrCreateFolder_(clientFolder, "Informações");
     const infoFile = createInfoDocument_(infoFolder, payload);
     const spreadsheet = getOrCreateSpreadsheet_(parentFolder);
 
@@ -36,7 +36,7 @@ function doGet() {
     ok: true,
     app: "Last One Onboarding Drive",
     driveParentFolderId: CONFIG.DRIVE_PARENT_FOLDER_ID,
-    message: "Web App ativo. Use o formulario da apresentacao para enviar a coleta de informacoes."
+    message: "Web App ativo. Use o formulario da apresentacao para enviar a coleta de informações."
   });
 }
 
@@ -92,7 +92,7 @@ function buildInfoDocument_(doc, payload) {
   body.setMarginTop(36).setMarginBottom(36).setMarginLeft(42).setMarginRight(42);
 
   addTitle_(body, "LAST ONE");
-  addSubtitle_(body, "Coleta de informacoes para onboarding e Landing Page");
+  addSubtitle_(body, "Coleta de informações para onboarding e Landing Page");
   addDivider_(body);
 
   addSection_(body, "Cliente", [
@@ -235,8 +235,8 @@ function ensureSpreadsheetHeaders_(spreadsheet) {
     "Entrega mesmo dia cidades ao redor",
     "Cidades ao redor",
     "Pasta cliente",
-    "Pasta informacoes",
-    "Documento informacoes"
+    "Pasta informações",
+    "Documento informações"
   ];
 
   if (sheet.getName() !== "Onboardings") sheet.setName("Onboardings");
