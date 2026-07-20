@@ -489,6 +489,35 @@
       line-height: 1.1;
     }
 
+    .lp-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      max-width: 920px;
+    }
+
+    .lp-item {
+      min-height: 118px;
+      padding: 18px;
+      display: grid;
+      align-content: space-between;
+    }
+
+    .lp-item b {
+      color: var(--green);
+      font-size: 14px;
+      font-weight: 900;
+      letter-spacing: 1.7px;
+      text-transform: uppercase;
+    }
+
+    .lp-item span {
+      color: var(--white);
+      font-size: clamp(18px, 1.5vw, 23px);
+      font-weight: 900;
+      line-height: 1.12;
+    }
+
     .routine-grid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -912,6 +941,29 @@
       gap: 12px;
     }
 
+    .form-section-title {
+      display: grid;
+      gap: 4px;
+      margin-top: 4px;
+      padding-top: 14px;
+      border-top: 1px solid var(--line);
+    }
+
+    .form-section-title b {
+      color: var(--green);
+      font-size: 13px;
+      font-weight: 900;
+      letter-spacing: 1.8px;
+      text-transform: uppercase;
+    }
+
+    .form-section-title span {
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 700;
+      line-height: 1.3;
+    }
+
     .access-item {
       grid-template-columns: 1.1fr .9fr .9fr 1.5fr;
       align-items: end;
@@ -1083,6 +1135,7 @@
       .growth-row,
       .two-col,
       .metric-grid,
+      .lp-grid,
       .routine-grid,
       .ninety-grid,
       .form-grid,
@@ -1277,8 +1330,28 @@
         <div class="main">
           <header class="topbar">
             <div class="brand"><img src="assets/last-one-logo-dark-bg.png" alt="Last One" /></div>
-            <div class="section-label">Indicadores de sucesso</div>
+            <div class="section-label">Coleta para Landing Page</div>
             <div class="slide-number">Slide 05</div>
+          </header>
+          <div class="content">
+            <h2>O que precisamos para montar a <span class="green">LP</span></h2>
+            <p class="lead">Essas respostas evitam atraso, revisao desnecessaria e promessa errada na pagina.</p>
+            <div class="lp-grid">
+              <div class="lp-item mini-card"><b>Servicos</b><span>Veterinaria, homeopatia, injetaveis e colirios</span></div>
+              <div class="lp-item mini-card"><b>Oferta</b><span>Desconto autorizado: 5%, 10% ou 15%</span></div>
+              <div class="lp-item mini-card"><b>Atendimento</b><span>Horario comercial e responsavel pelos leads</span></div>
+              <div class="lp-item mini-card"><b>Praca</b><span>Habitantes, cidades ao redor e entrega no mesmo dia</span></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-stage="4">
+        <div class="main">
+          <header class="topbar">
+            <div class="brand"><img src="assets/last-one-logo-dark-bg.png" alt="Last One" /></div>
+            <div class="section-label">Indicadores de sucesso</div>
+            <div class="slide-number">Slide 06</div>
           </header>
           <div class="content">
             <h2>Como mediremos <span class="green">sucesso</span></h2>
@@ -1300,7 +1373,7 @@
           <header class="topbar">
             <div class="brand"><img src="assets/last-one-logo-dark-bg.png" alt="Last One" /></div>
             <div class="section-label">Rotina de acompanhamento</div>
-            <div class="slide-number">Slide 06</div>
+            <div class="slide-number">Slide 07</div>
           </header>
           <div class="content">
             <h2>Nossa rotina de <span class="green">acompanhamento</span></h2>
@@ -1349,7 +1422,7 @@
         <div class="controls">
           <button class="access-btn" id="openAccessModal" type="button">Coletar acessos</button>
           <button class="nav-btn" id="prevSlide" type="button" aria-label="Slide anterior">&#8249;</button>
-          <div class="slide-counter"><span id="currentSlide">01</span> / 06</div>
+          <div class="slide-counter"><span id="currentSlide">01</span> / 07</div>
           <button class="nav-btn" id="nextSlide" type="button" aria-label="Proximo slide">&#8250;</button>
         </div>
       </aside>
@@ -1411,6 +1484,72 @@
         <div class="field">
           <label for="generalNotes">Observacoes da reuniao</label>
           <textarea id="generalNotes" name="generalNotes" placeholder="Ex.: combinado sobre atendimento, horario de resposta, regiao prioritaria, data do raio X..."></textarea>
+        </div>
+
+        <div class="form-section-title">
+          <b>Coleta para Landing Page</b>
+          <span>Essas respostas alimentam a pagina do cliente e evitam atraso na criacao da LP.</span>
+        </div>
+
+        <div class="form-grid">
+          <div class="field">
+            <label for="veterinaryManipulation">Trabalha com manipulacao veterinaria?</label>
+            <select id="veterinaryManipulation" name="veterinaryManipulation">
+              <option value="">Selecionar</option>
+              <option>Sim</option>
+              <option>Nao</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="homeopathy">Trabalha com homeopatia?</label>
+            <select id="homeopathy" name="homeopathy">
+              <option value="">Selecionar</option>
+              <option>Sim</option>
+              <option>Nao</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="injectablesEyeDrops">Trabalha com injetaveis e colirios?</label>
+            <select id="injectablesEyeDrops" name="injectablesEyeDrops">
+              <option value="">Selecionar</option>
+              <option>Sim</option>
+              <option>Nao</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="lpDiscount">Desconto para trabalhar na LP</label>
+            <select id="lpDiscount" name="lpDiscount">
+              <option value="">Selecionar</option>
+              <option>5%</option>
+              <option>10%</option>
+              <option>15%</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="businessHours">Horario de atendimento</label>
+            <input id="businessHours" name="businessHours" placeholder="Ex.: Seg a sex, 08h as 18h" />
+          </div>
+          <div class="field">
+            <label for="cityPopulation">Quantidade de habitantes na cidade</label>
+            <input id="cityPopulation" name="cityPopulation" inputmode="numeric" placeholder="Ex.: 120 mil habitantes" />
+          </div>
+          <div class="field">
+            <label for="sameDayDeliveryNearby">Entrega no mesmo dia para cidades ao redor?</label>
+            <select id="sameDayDeliveryNearby" name="sameDayDeliveryNearby">
+              <option value="">Selecionar</option>
+              <option>Sim</option>
+              <option>Nao</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="nearbyCities">Quais cidades ao redor atende?</label>
+            <input id="nearbyCities" name="nearbyCities" placeholder="Ex.: Mirassol, Bady Bassitt, Cedral" />
+          </div>
+        </div>
+
+        <div class="form-section-title">
+          <b>Acessos</b>
+          <span>Priorize convites por e-mail e permissoes de usuario. Evite registrar senhas.</span>
         </div>
 
         <div class="access-list" aria-label="Checklist de acessos">
@@ -1511,6 +1650,29 @@
           notes: fields[3].value.trim()
         };
       });
+      const lpAnswers = {
+        veterinaryManipulation: String(data.get("veterinaryManipulation") || "").trim(),
+        homeopathy: String(data.get("homeopathy") || "").trim(),
+        injectablesEyeDrops: String(data.get("injectablesEyeDrops") || "").trim(),
+        lpDiscount: String(data.get("lpDiscount") || "").trim(),
+        businessHours: String(data.get("businessHours") || "").trim(),
+        cityPopulation: String(data.get("cityPopulation") || "").trim(),
+        sameDayDeliveryNearby: String(data.get("sameDayDeliveryNearby") || "").trim(),
+        nearbyCities: String(data.get("nearbyCities") || "").trim()
+      };
+      const originalNotes = String(data.get("generalNotes") || "").trim();
+      const lpNotes = [
+        "COLETA PARA LANDING PAGE",
+        "Manipulacao veterinaria: " + (lpAnswers.veterinaryManipulation || "-"),
+        "Homeopatia: " + (lpAnswers.homeopathy || "-"),
+        "Injetaveis e colirios: " + (lpAnswers.injectablesEyeDrops || "-"),
+        "Desconto autorizado na LP: " + (lpAnswers.lpDiscount || "-"),
+        "Horario de atendimento: " + (lpAnswers.businessHours || "-"),
+        "Habitantes na cidade: " + (lpAnswers.cityPopulation || "-"),
+        "Entrega no mesmo dia para cidades ao redor: " + (lpAnswers.sameDayDeliveryNearby || "-"),
+        "Cidades ao redor atendidas: " + (lpAnswers.nearbyCities || "-")
+      ].join("\n");
+      const combinedNotes = originalNotes ? originalNotes + "\n\n" + lpNotes : lpNotes;
 
       return {
         clientName: String(data.get("clientName") || "").trim(),
@@ -1522,7 +1684,9 @@
         ownerWhatsapp: String(data.get("ownerWhatsapp") || "").trim(),
         leadPhone: String(data.get("leadPhone") || "").trim(),
         lastOneOwner: String(data.get("lastOneOwner") || "").trim(),
-        generalNotes: String(data.get("generalNotes") || "").trim(),
+        generalNotesRaw: originalNotes,
+        generalNotes: combinedNotes,
+        lpAnswers,
         source: "Apresentacao Onboarding Last One",
         createdAt: new Date().toISOString(),
         accesses

@@ -80,6 +80,7 @@ function createAccessFile_(folder, payload) {
 
 function buildAccessContent_(payload) {
   const accesses = Array.isArray(payload.accesses) ? payload.accesses : [];
+  const lpAnswers = payload.lpAnswers || {};
   const lines = [
     "LAST ONE | COLETA DE ACESSOS",
     "",
@@ -96,7 +97,17 @@ function buildAccessContent_(payload) {
     "Criado em: " + safe_(payload.createdAt),
     "",
     "OBSERVACOES DA REUNIAO",
-    safe_(payload.generalNotes),
+    safe_(payload.generalNotesRaw || payload.generalNotes),
+    "",
+    "COLETA PARA LANDING PAGE",
+    "Manipulacao veterinaria: " + safe_(lpAnswers.veterinaryManipulation),
+    "Homeopatia: " + safe_(lpAnswers.homeopathy),
+    "Injetaveis e colirios: " + safe_(lpAnswers.injectablesEyeDrops),
+    "Desconto autorizado na LP: " + safe_(lpAnswers.lpDiscount),
+    "Horario de atendimento: " + safe_(lpAnswers.businessHours),
+    "Habitantes na cidade: " + safe_(lpAnswers.cityPopulation),
+    "Entrega no mesmo dia para cidades ao redor: " + safe_(lpAnswers.sameDayDeliveryNearby),
+    "Cidades ao redor atendidas: " + safe_(lpAnswers.nearbyCities),
     "",
     "ACESSOS",
     ""
@@ -142,6 +153,14 @@ function getOrCreateSpreadsheet_(parentFolder) {
     "WhatsApp",
     "Numero leads",
     "Responsavel Last One",
+    "Manipulacao veterinaria",
+    "Homeopatia",
+    "Injetaveis e colirios",
+    "Desconto LP",
+    "Horario atendimento",
+    "Habitantes",
+    "Entrega mesmo dia cidades ao redor",
+    "Cidades ao redor",
     "Pasta cliente",
     "Pasta acessos",
     "Arquivo acessos",
@@ -155,6 +174,7 @@ function getOrCreateSpreadsheet_(parentFolder) {
 function appendLog_(spreadsheet, payload, clientFolder, accessFolder, accessFile) {
   const sheet = spreadsheet.getSheetByName("Onboardings") || spreadsheet.getActiveSheet();
   const accesses = Array.isArray(payload.accesses) ? payload.accesses : [];
+  const lpAnswers = payload.lpAnswers || {};
   const statusSummary = accesses
     .map((access) => safe_(access.name) + ": " + safe_(access.status))
     .join(" | ");
@@ -170,6 +190,14 @@ function appendLog_(spreadsheet, payload, clientFolder, accessFolder, accessFile
     safe_(payload.ownerWhatsapp),
     safe_(payload.leadPhone),
     safe_(payload.lastOneOwner),
+    safe_(lpAnswers.veterinaryManipulation),
+    safe_(lpAnswers.homeopathy),
+    safe_(lpAnswers.injectablesEyeDrops),
+    safe_(lpAnswers.lpDiscount),
+    safe_(lpAnswers.businessHours),
+    safe_(lpAnswers.cityPopulation),
+    safe_(lpAnswers.sameDayDeliveryNearby),
+    safe_(lpAnswers.nearbyCities),
     clientFolder.getUrl(),
     accessFolder.getUrl(),
     accessFile.getUrl(),
