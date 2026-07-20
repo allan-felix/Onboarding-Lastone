@@ -1,7 +1,7 @@
 const CONFIG = {
   DRIVE_PARENT_FOLDER_ID: "1HUSwYNFGcCItXVrjLGjitKhn28fBUR-V",
   SPREADSHEET_NAME: "Controle de Onboarding Last One",
-  ACCESS_FILE_PREFIX: "Acessos - "
+  INFO_FILE_PREFIX: "Informacoes - "
 };
 
 function doPost(e) {
@@ -11,17 +11,17 @@ function doPost(e) {
 
     const parentFolder = DriveApp.getFolderById(CONFIG.DRIVE_PARENT_FOLDER_ID);
     const clientFolder = getOrCreateFolder_(parentFolder, sanitizeName_(payload.clientName));
-    const accessFolder = getOrCreateFolder_(clientFolder, "Acessos");
-    const accessFile = createAccessFile_(accessFolder, payload);
+    const infoFolder = getOrCreateFolder_(clientFolder, "Informacoes");
+    const infoFile = createInfoDocument_(infoFolder, payload);
     const spreadsheet = getOrCreateSpreadsheet_(parentFolder);
 
-    appendLog_(spreadsheet, payload, clientFolder, accessFolder, accessFile);
+    appendLog_(spreadsheet, payload, clientFolder, infoFolder, infoFile);
 
     return jsonResponse_({
       ok: true,
       clientFolderUrl: clientFolder.getUrl(),
-      accessFolderUrl: accessFolder.getUrl(),
-      accessFileUrl: accessFile.getUrl()
+      infoFolderUrl: infoFolder.getUrl(),
+      infoFileUrl: infoFile.getUrl()
     });
   } catch (error) {
     return jsonResponse_({
@@ -36,7 +36,7 @@ function doGet() {
     ok: true,
     app: "Last One Onboarding Drive",
     driveParentFolderId: CONFIG.DRIVE_PARENT_FOLDER_ID,
-    message: "Web App ativo. Use o formulario da apresentacao para enviar a coleta de acessos."
+    message: "Web App ativo. Use o formulario da apresentacao para enviar a coleta de informacoes."
   });
 }
 
@@ -64,76 +64,142 @@ function getOrCreateFolder_(parentFolder, folderName) {
   return parentFolder.createFolder(folderName);
 }
 
-function createAccessFile_(folder, payload) {
-  const fileName = CONFIG.ACCESS_FILE_PREFIX + sanitizeName_(payload.clientName);
+function createInfoDocument_(folder, payload) {
+  const fileName = CONFIG.INFO_FILE_PREFIX + sanitizeName_(payload.clientName);
   const existingFiles = folder.getFilesByName(fileName);
-  const content = buildAccessContent_(payload);
+  let doc;
 
   if (existingFiles.hasNext()) {
     const file = existingFiles.next();
-    file.setContent(content);
-    return file;
+    doc = DocumentApp.openById(file.getId());
+    doc.getBody().clear();
+  } else {
+    doc = DocumentApp.create(fileName);
+    const file = DriveApp.getFileById(doc.getId());
+    folder.addFile(file);
+    DriveApp.getRootFolder().removeFile(file);
   }
 
-  return folder.createFile(fileName, content, MimeType.PLAIN_TEXT);
+  buildInfoDocument_(doc, payload);
+  doc.saveAndClose();
+
+  return DriveApp.getFileById(doc.getId());
 }
 
-function buildAccessContent_(payload) {
-  const accesses = Array.isArray(payload.accesses) ? payload.accesses : [];
+function buildInfoDocument_(doc, payload) {
   const lpAnswers = payload.lpAnswers || {};
-  const lines = [
-    "LAST ONE | COLETA DE ACESSOS",
-    "",
-    "CLIENTE",
-    "Farmacia: " + safe_(payload.clientName),
-    "Cidade / UF: " + safe_(payload.city),
-    "Localizacao que atua: " + safe_(payload.serviceArea),
-    "Data da reuniao: " + safe_(payload.meetingDate),
-    "Data do primeiro raio X: " + safe_(payload.xrayDate),
-    "Responsavel da farmacia: " + safe_(payload.ownerName),
-    "WhatsApp do responsavel: " + safe_(payload.ownerWhatsapp),
-    "Numero que recebe os leads: " + safe_(payload.leadPhone),
-    "Responsavel Last One: " + safe_(payload.lastOneOwner),
-    "Criado em: " + safe_(payload.createdAt),
-    "",
-    "OBSERVACOES DA REUNIAO",
-    safe_(payload.generalNotesRaw || payload.generalNotes),
-    "",
-    "COLETA PARA LANDING PAGE",
-    "Manipulacao veterinaria: " + safe_(lpAnswers.veterinaryManipulation),
-    "Homeopatia: " + safe_(lpAnswers.homeopathy),
-    "Injetaveis e colirios: " + safe_(lpAnswers.injectablesEyeDrops),
-    "Desconto autorizado na LP: " + safe_(lpAnswers.lpDiscount),
-    "Horario de atendimento: " + safe_(lpAnswers.businessHours),
-    "Habitantes na cidade: " + safe_(lpAnswers.cityPopulation),
-    "Entrega no mesmo dia para cidades ao redor: " + safe_(lpAnswers.sameDayDeliveryNearby),
-    "Cidades ao redor atendidas: " + safe_(lpAnswers.nearbyCities),
-    "",
-    "ACESSOS",
-    ""
-  ];
+  const body = doc.getBody();
+  body.setMarginTop(36).setMarginBottom(36).setMarginLeft(42).setMarginRight(42);
 
-  accesses.forEach((access, index) => {
-    lines.push(
-      String(index + 1) + ". " + safe_(access.name),
-      "Status: " + safe_(access.status),
-      "E-mail / ID: " + safe_(access.account),
-      "Observacao: " + safe_(access.notes),
-      ""
-    );
-  });
+  addTitle_(body, "LAST ONE");
+  addSubtitle_(body, "Coleta de informacoes para onboarding e Landing Page");
+  addDivider_(body);
 
-  lines.push(
-    "IMPORTANTE",
-    "Evite registrar senhas neste arquivo. Priorize convites por e-mail, permissoes de usuario e validacao manual quando necessario."
-  );
+  addSection_(body, "Cliente", [
+    ["Farmacia", payload.clientName],
+    ["Cidade / UF", payload.city],
+    ["Localizacao que atua", payload.serviceArea],
+    ["Data da reuniao", payload.meetingDate],
+    ["Data do primeiro raio X", payload.xrayDate],
+    ["Responsavel da farmacia", payload.ownerName],
+    ["WhatsApp do responsavel", payload.ownerWhatsapp],
+    ["Numero que recebe os leads", payload.leadPhone],
+    ["Responsavel Last One", payload.lastOneOwner]
+  ]);
 
-  return lines.join("\n");
+  addSection_(body, "Landing Page", [
+    ["Manipulacao veterinaria", lpAnswers.veterinaryManipulation],
+    ["Homeopatia", lpAnswers.homeopathy],
+    ["Injetaveis e colirios", lpAnswers.injectablesEyeDrops],
+    ["Desconto autorizado na LP", lpAnswers.lpDiscount],
+    ["Horario de atendimento", lpAnswers.businessHours],
+    ["Habitantes na cidade", lpAnswers.cityPopulation],
+    ["Entrega no mesmo dia para cidades ao redor", lpAnswers.sameDayDeliveryNearby],
+    ["Cidades ao redor atendidas", lpAnswers.nearbyCities]
+  ]);
+
+  addNotes_(body, "Observacoes da reuniao", payload.generalNotesRaw || payload.generalNotes);
+
+  const footer = body.appendParagraph("Documento gerado automaticamente pela apresentacao de onboarding da Last One.");
+  footer.editAsText()
+    .setForegroundColor("#777777")
+    .setFontSize(9);
+  footer.setSpacingBefore(18);
+}
+
+function addTitle_(body, text) {
+  const paragraph = body.appendParagraph(text);
+  paragraph.editAsText()
+    .setBold(true)
+    .setForegroundColor("#72FF00")
+    .setFontSize(22);
+  paragraph.setSpacingAfter(2);
+}
+
+function addSubtitle_(body, text) {
+  const paragraph = body.appendParagraph(text);
+  paragraph.editAsText()
+    .setBold(true)
+    .setForegroundColor("#111111")
+    .setFontSize(16);
+  paragraph.setSpacingAfter(12);
+}
+
+function addDivider_(body) {
+  body.appendHorizontalRule();
+  body.appendParagraph("");
+}
+
+function addSection_(body, title, rows) {
+  const heading = body.appendParagraph(title);
+  heading.editAsText()
+    .setBold(true)
+    .setForegroundColor("#72FF00")
+    .setFontSize(14);
+  heading.setSpacingBefore(12).setSpacingAfter(6);
+
+  const table = body.appendTable(rows.map((row) => [safe_(row[0]), safeDisplay_(row[1])]));
+  table.setBorderColor("#D9D9D9");
+
+  for (let rowIndex = 0; rowIndex < table.getNumRows(); rowIndex++) {
+    const row = table.getRow(rowIndex);
+    row.getCell(0).setBackgroundColor("#111111");
+    row.getCell(1).setBackgroundColor("#F7F7F7");
+    styleCell_(row.getCell(0), "#FFFFFF", true);
+    styleCell_(row.getCell(1), "#111111", false);
+  }
+}
+
+function addNotes_(body, title, notes) {
+  const heading = body.appendParagraph(title);
+  heading.editAsText()
+    .setBold(true)
+    .setForegroundColor("#72FF00")
+    .setFontSize(14);
+  heading.setSpacingBefore(12).setSpacingAfter(6);
+
+  const paragraph = body.appendParagraph(safeDisplay_(notes));
+  paragraph.editAsText()
+    .setBackgroundColor("#F7F7F7")
+    .setForegroundColor("#111111")
+    .setFontSize(11);
+  paragraph.setSpacingAfter(10);
+}
+
+function styleCell_(cell, color, bold) {
+  const text = cell.editAsText();
+  text.setForegroundColor(color);
+  text.setFontSize(10);
+  text.setBold(bold);
 }
 
 function getOrCreateSpreadsheet_(parentFolder) {
   const files = parentFolder.getFilesByName(CONFIG.SPREADSHEET_NAME);
-  if (files.hasNext()) return SpreadsheetApp.open(files.next());
+  if (files.hasNext()) {
+    const spreadsheet = SpreadsheetApp.open(files.next());
+    ensureSpreadsheetHeaders_(spreadsheet);
+    return spreadsheet;
+  }
 
   const spreadsheet = SpreadsheetApp.create(CONFIG.SPREADSHEET_NAME);
   const file = DriveApp.getFileById(spreadsheet.getId());
@@ -142,7 +208,14 @@ function getOrCreateSpreadsheet_(parentFolder) {
 
   const sheet = spreadsheet.getActiveSheet();
   sheet.setName("Onboardings");
-  sheet.appendRow([
+  ensureSpreadsheetHeaders_(spreadsheet);
+
+  return spreadsheet;
+}
+
+function ensureSpreadsheetHeaders_(spreadsheet) {
+  const sheet = spreadsheet.getSheetByName("Onboardings") || spreadsheet.getActiveSheet();
+  const headers = [
     "Criado em",
     "Cliente",
     "Cidade / UF",
@@ -162,22 +235,18 @@ function getOrCreateSpreadsheet_(parentFolder) {
     "Entrega mesmo dia cidades ao redor",
     "Cidades ao redor",
     "Pasta cliente",
-    "Pasta acessos",
-    "Arquivo acessos",
-    "Resumo status"
-  ]);
-  sheet.setFrozenRows(1);
+    "Pasta informacoes",
+    "Documento informacoes"
+  ];
 
-  return spreadsheet;
+  if (sheet.getName() !== "Onboardings") sheet.setName("Onboardings");
+  sheet.getRange(1, 1, 1, headers.length).setValues([headers]);
+  sheet.setFrozenRows(1);
 }
 
-function appendLog_(spreadsheet, payload, clientFolder, accessFolder, accessFile) {
+function appendLog_(spreadsheet, payload, clientFolder, infoFolder, infoFile) {
   const sheet = spreadsheet.getSheetByName("Onboardings") || spreadsheet.getActiveSheet();
-  const accesses = Array.isArray(payload.accesses) ? payload.accesses : [];
   const lpAnswers = payload.lpAnswers || {};
-  const statusSummary = accesses
-    .map((access) => safe_(access.name) + ": " + safe_(access.status))
-    .join(" | ");
 
   sheet.appendRow([
     new Date(),
@@ -199,9 +268,8 @@ function appendLog_(spreadsheet, payload, clientFolder, accessFolder, accessFile
     safe_(lpAnswers.sameDayDeliveryNearby),
     safe_(lpAnswers.nearbyCities),
     clientFolder.getUrl(),
-    accessFolder.getUrl(),
-    accessFile.getUrl(),
-    statusSummary
+    infoFolder.getUrl(),
+    infoFile.getUrl()
   ]);
 }
 
@@ -216,6 +284,11 @@ function sanitizeName_(value) {
 function safe_(value) {
   if (value === null || value === undefined) return "";
   return String(value).trim();
+}
+
+function safeDisplay_(value) {
+  const clean = safe_(value);
+  return clean || "-";
 }
 
 function jsonResponse_(data) {
